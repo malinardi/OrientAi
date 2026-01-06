@@ -20,7 +20,7 @@ export const generateOrientAiResponse = async (userMessage: string, history: Mes
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-3-pro-preview',
       contents: contents as any,
       config: {
         systemInstruction: getSystemPrompt(lang),

@@ -1,5 +1,7 @@
 {
   "name": "OrientAi - Assistente IPAM Porto",
   "description": "Chatbot especializado em sanar dúvidas sobre o Guia de Mestrado (Dissertação, Projeto Profissional e Estágio) do IPAM Porto.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "microphone"
+  ]
 }

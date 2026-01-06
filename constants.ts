@@ -36,6 +36,7 @@ export const TRANSLATIONS = {
     placeholder: "Pergunte sobre as tipologias de tese, prazos ou regras...",
     disclaimer: "OrientAi pode cometer erros. Verifique as informações importantes no Guia oficial disponível no Canvas.",
     newChat: "Nova Conversa",
+    clearChat: "Limpar Conversa",
     recentChats: "Conversas Recentes",
     noRecent: "Nenhuma conversa recente",
     badge: "Guia Mestrado IPAM",
@@ -44,7 +45,7 @@ export const TRANSLATIONS = {
     suggestions: [
       "Quais são as tipologias de tese disponíveis?",
       "Qual é a estrutura recomendada para uma Dissertação?",
-      "Quais são as datas importantes no calendário?",
+      "Qual é o calendário das defesas?",
       "Quais as regras para uso de Inteligência Artificial?",
       "Como funciona a cerimônia de defesa?"
     ]
@@ -55,6 +56,7 @@ export const TRANSLATIONS = {
     placeholder: "Ask about thesis typologies, deadlines, or rules...",
     disclaimer: "OrientAi can make mistakes. Check important information in the official Guide available on Canvas.",
     newChat: "New Chat",
+    clearChat: "Clear Chat",
     recentChats: "Recent Chats",
     noRecent: "No recent chats",
     badge: "IPAM Master's Guide",
