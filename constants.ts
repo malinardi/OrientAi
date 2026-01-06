@@ -39,8 +39,8 @@ export const TRANSLATIONS = {
     clearChat: "Limpar Conversa",
     recentChats: "Conversas Recentes",
     noRecent: "Nenhuma conversa recente",
-    badge: "Guia Mestrado IPAM",
-    role: "Estudante IPAM",
+    badge: "A orientar o futuro do marketing",
+    role: "Orientador IPAM",
     course: "Mestrado em Marketing",
     suggestions: [
       "Quais são as tipologias de tese disponíveis?",
@@ -59,8 +59,8 @@ export const TRANSLATIONS = {
     clearChat: "Clear Chat",
     recentChats: "Recent Chats",
     noRecent: "No recent chats",
-    badge: "IPAM Master's Guide",
-    role: "IPAM Student",
+    badge: "Shaping the future of marketing",
+    role: "IPAM Supervisor",
     course: "Master in Marketing",
     suggestions: [
       "What are the available thesis typologies?",

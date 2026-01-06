@@ -13,9 +13,7 @@ const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('pt-PT');
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const recognitionRef = useRef<any>(null);
 
   const t = TRANSLATIONS[language];
 
@@ -23,70 +21,7 @@ const App: React.FC = () => {
     if (sessions.length === 0) {
       handleNewChat();
     }
-
-    // Initialize Speech Recognition
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-
-      recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
-
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-          } else {
-            interimTranscript += event.results[i][0].transcript;
-          }
-        }
-        
-        if (finalTranscript || interimTranscript) {
-          setInput(finalTranscript || interimTranscript);
-        }
-      };
-
-      recognitionRef.current.onerror = (event: any) => {
-        // Silence "no-speech" error as it is a natural timeout when user stops talking
-        if (event.error !== 'no-speech') {
-          console.error('Speech recognition error:', event.error);
-        }
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-    }
-
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
   }, []);
-
-  // Sync recognition language with app language state
-  useEffect(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.lang = language === 'pt-PT' ? 'pt-PT' : 'en-US';
-    }
-  }, [language]);
-
-  const toggleListening = () => {
-    if (isListening) {
-      recognitionRef.current?.stop();
-    } else {
-      try {
-        recognitionRef.current?.start();
-        setIsListening(true);
-      } catch (e) {
-        console.error('Failed to start speech recognition:', e);
-      }
-    }
-  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -121,12 +56,6 @@ const App: React.FC = () => {
 
   const handleSendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
-
-    // Stop listening if user clicks send
-    if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
-    }
 
     const userMsg: Message = {
       id: uuidv4(),
@@ -277,7 +206,7 @@ const App: React.FC = () => {
         {/* Input Area */}
         <div className="p-6 bg-white border-t border-gray-100">
           <div className="max-w-4xl mx-auto relative">
-            <div className={`flex items-center gap-2 bg-gray-50 rounded-2xl p-2 border transition-all shadow-sm ${isListening ? 'border-orange-400 bg-orange-50 ring-2 ring-orange-100' : 'border-transparent focus-within:border-orange-400 focus-within:bg-white'}`}>
+            <div className={`flex items-center gap-2 bg-gray-50 rounded-2xl p-2 border transition-all shadow-sm border-transparent focus-within:border-orange-400 focus-within:bg-white`}>
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -287,29 +216,12 @@ const App: React.FC = () => {
                     handleSendMessage(input);
                   }
                 }}
-                placeholder={isListening ? (language === 'pt-PT' ? 'Ouvindo...' : 'Listening...') : t.placeholder}
+                placeholder={t.placeholder}
                 className="flex-1 bg-transparent border-none focus:ring-0 resize-none py-2 px-4 text-sm custom-scrollbar max-h-32"
                 rows={1}
               />
               
               <div className="flex items-center gap-1 pr-2">
-                {/* Voice Input Button */}
-                <button
-                  type="button"
-                  onClick={toggleListening}
-                  className={`p-2 rounded-xl transition-all relative ${
-                    isListening ? 'text-orange-600 bg-orange-100' : 'text-gray-400 hover:text-orange-600 hover:bg-orange-50'
-                  }`}
-                  title={language === 'pt-PT' ? 'Falar mensagem' : 'Speak message'}
-                >
-                  {isListening && (
-                    <span className="absolute inset-0 rounded-xl bg-orange-500 animate-ping opacity-25"></span>
-                  )}
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                  </svg>
-                </button>
-
                 <button
                   disabled={!input.trim() || isLoading}
                   onClick={() => handleSendMessage(input)}
